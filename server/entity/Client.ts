@@ -1,32 +1,34 @@
 import Address from "./Address";
 
 export default class Client {
+    cpf: string
     addresses: Address[]
 
     constructor(
         readonly fullname: string,
-        readonly cpf: string,
+        cpf: string,
         address: Address
     ) {
-        if (!this.isValidCPF(cpf))
+        const formatedCPF = cpf.replaceAll(".","").replaceAll("-","").trim();
+        if (!this.isValidCPF(formatedCPF))
             throw new Error("Invalid CPF");
         
         this.addresses = [address]
+        this.cpf = formatedCPF
     }
 
     isValidCPF (cpf: string): boolean {
-        cpf = cpf.replace(".","").replace("-","");
-
         if (cpf.length != 11) return false;
         if (this.allEqualDigits(cpf)) return false;
 
+        const cpfNonVerifyingDigits = 9
         let numeratorDigit1, numeratorDigit2, checkerDigit1, checkerDigit2; 
         numeratorDigit1 = numeratorDigit2 = checkerDigit1 = checkerDigit2 = 0;  
 
-        for (let i = 1; i < cpf.length - 1; i++) {  
+        for (let i = 0; i < cpfNonVerifyingDigits; i++) {  
             const digit = parseInt(cpf[i]);  							
-            numeratorDigit1 += (11 - i) * digit;  
-            numeratorDigit2 += (12 - i) * digit;  
+            numeratorDigit1 += (10 - i) * digit;  
+            numeratorDigit2 += (11 - i) * digit;  
         };  
 
         const firstDigitRest = (numeratorDigit1 % 11);  
