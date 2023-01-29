@@ -7,4 +7,8 @@ export default class Address {
         public state: string = "",
         public country: string = ""
     ) {}
+
+    getShippingCost(): number {
+        return 0;
+    }
 }
