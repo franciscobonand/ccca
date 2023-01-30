@@ -1,19 +1,7 @@
-import * as trpcExpress from '@trpc/server/adapters/express';
-import express from 'express';
-import { router, createContext } from './trpc';
+import Server from './api/Server';
+import PocketBaseDB from './db/Pocketbase';
 
+const db = new PocketBaseDB("http://localhost:8090");
+const server = new Server(4000, db);
 
-const app = express();
-const appRouter = router({
-    // TODO: add routers
-});
-
-app.use(
-    '/trpc',
-    trpcExpress.createExpressMiddleware({
-        router: appRouter,
-        createContext,
-    }),
-);
-
-app.listen(4000, () => console.log("Server is running on port 4000"));
+server.run();

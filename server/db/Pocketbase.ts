@@ -1,5 +1,5 @@
 import PocketBase from 'pocketbase';
-import Database from './interface';
+import Database from './Interface';
 
 export default class PocketBaseDB implements Database {
     COUPON_COLL = "coupons";
