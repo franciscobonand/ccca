@@ -1,6 +1,9 @@
 import { Request, Response } from 'express';
+import Database from '../../db/Interface';
 
-
-export function getCoupon(req: Request, resp: Response) {
-    resp.json({ message: "ablubleble" });
+export function getCoupon(db: Database) {
+    return function(req: Request, resp: Response) {
+        const coupid = req.params.id
+        resp.json({ message: coupid });
+    }
 };
