@@ -9,7 +9,7 @@ export default class Client {
         cpf: string,
         address: Address
     ) {
-        const formatedCPF = cpf.replaceAll(".","").replaceAll("-","").trim();
+        const formatedCPF = cpf.replace(/\D/g, "");
         if (!this.isValidCPF(formatedCPF))
             throw new Error("Invalid CPF");
         
@@ -21,9 +21,19 @@ export default class Client {
         if (cpf.length != 11) return false;
         if (this.allEqualDigits(cpf)) return false;
 
+        const expectedCheckerDigits = this.getCPFCheckerDigits(cpf); 
+        const actualCheckerDigits = cpf.substring(cpf.length - 2, cpf.length);  
+        return actualCheckerDigits == expectedCheckerDigits;
+    }
+
+    private allEqualDigits(cpf: string): boolean {
+        return cpf.split("").every(digit => digit === cpf[0]);
+    }
+
+    private getCPFCheckerDigits(cpf: string): string {
         const cpfNonVerifyingDigits = 9
-        let numeratorDigit1, numeratorDigit2, checkerDigit1, checkerDigit2; 
-        numeratorDigit1 = numeratorDigit2 = checkerDigit1 = checkerDigit2 = 0;  
+        let numeratorDigit1 = 0;
+        let numeratorDigit2 = 0;
 
         for (let i = 0; i < cpfNonVerifyingDigits; i++) {  
             const digit = parseInt(cpf[i]);  							
@@ -32,18 +42,12 @@ export default class Client {
         };  
 
         const firstDigitRest = (numeratorDigit1 % 11);  
-        checkerDigit1 = (firstDigitRest < 2) ? checkerDigit1 = 0 : 11 - firstDigitRest;  
+        const checkerDigit1 = (firstDigitRest < 2) ? 0 : 11 - firstDigitRest;  
 
         numeratorDigit2 += 2 * checkerDigit1;  
         const secondDigitRest = (numeratorDigit2 % 11);  
-        checkerDigit2 = (secondDigitRest < 2) ? 0 : 11 - secondDigitRest; 
+        const checkerDigit2 = (secondDigitRest < 2) ? 0 : 11 - secondDigitRest; 
 
-        const actualCheckerDigits = cpf.substring(cpf.length - 2, cpf.length);  
-        const expectedCheckerDigits = checkerDigit1 + "" + checkerDigit2;  
-        return actualCheckerDigits == expectedCheckerDigits;
-    }
-
-    private allEqualDigits(cpf: string): boolean {
-        return cpf.split("").every(digit => digit === cpf[0]);
+        return `${checkerDigit1}${checkerDigit2}`;
     }
 }
