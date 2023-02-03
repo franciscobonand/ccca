@@ -36,6 +36,7 @@ class Order {
         readonly client: Client,
         readonly paymentMethod: PaymentMethod,
         coupons: Coupon[] = [],
+        public id?: string,
     ){
         this.totalValue = this.calculateTotal(items, coupons, address);
         this.status = OrderStatus.Processing;

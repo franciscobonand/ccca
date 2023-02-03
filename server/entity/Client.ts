@@ -7,7 +7,8 @@ export default class Client {
     constructor(
         readonly fullname: string,
         cpf: string,
-        address: Address
+        address: Address,
+        public id?: string,
     ) {
         const formatedCPF = cpf.replace(/\D/g, "");
         if (!this.isValidCPF(formatedCPF))

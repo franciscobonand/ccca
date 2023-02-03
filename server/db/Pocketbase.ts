@@ -1,5 +1,6 @@
 import PocketBase from 'pocketbase';
 import Database from './Interface';
+import Coupon from '../entity/Coupon';
 
 export default class PocketBaseDB implements Database {
     COUPON_COLL = "coupons";
@@ -8,22 +9,35 @@ export default class PocketBaseDB implements Database {
     PRODUCT_COLL = "products";
     ORDER_COLL = "orders";
     
-    connection: PocketBase
+    conn: PocketBase
 
     constructor(readonly host: string) {
-       this.connection = new PocketBase(host);
+       this.conn = new PocketBase(host);
     }
 
     async health() {
-        const hc = await this.connection.health.check();
+        const hc = await this.conn.health.check();
         if (hc.code != 200) return false;
         return true;
     }
 
-    getCoupon(){}
-    createCoupon(){}
-    updateCoupon(){}
-    deleteCoupon(){}
+    async getCoupon(id: string): Promise<Coupon> {
+        const record = await this.conn.collection(this.COUPON_COLL).getOne<Coupon>(id); 
+        return new Coupon(record.id, record.name, record.discount);
+    }
+    async createCoupon(coupon: Coupon): Promise<Coupon> {
+        const record = await this.conn.collection(this.COUPON_COLL).create<Coupon>(coupon);
+        return new Coupon(record.id, record.name, record.discount);
+    }
+    async updateCoupon(coupon: Coupon): Promise<Coupon> {
+        const record = await this.conn.collection(this.COUPON_COLL).update<Coupon>(coupon.id, coupon);
+        return new Coupon(record.id, record.name, record.discount);
+    }
+    async deleteCoupon(id: string): Promise<null> {
+        await this.conn.collection(this.COUPON_COLL).delete(id); 
+        return null;
+    }
+
 
     getClient(){}
     createClient(){}
