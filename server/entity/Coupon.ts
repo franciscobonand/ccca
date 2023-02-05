@@ -13,8 +13,8 @@ export default class Coupon {
     }
 
     static isCoupon(data: any): boolean {
-        const validDiscount = data.discount && typeof data.discount == "number";
         const validName = data.name && typeof data.name == "string";
+        const validDiscount = data.discount && typeof data.discount == "number";
         return validDiscount && validName;
     }
 }
