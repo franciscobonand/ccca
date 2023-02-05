@@ -1,4 +1,5 @@
 import Coupon from '../entity/Coupon';
+import Product from '../entity/Product';
 
 export default interface Database {
     health(): Promise<boolean>;
@@ -18,10 +19,10 @@ export default interface Database {
     updateAddress();
     deleteAddress();
 
-    getProduct();
-    createProduct();
-    updateProduct();
-    deleteProduct();
+    getProduct(id: string): Promise<Product>;
+    createProduct(product: Product): Promise<Product>;
+    updateProduct(product: Product): Promise<Product>;
+    deleteProduct(id: string): Promise<null>;
 
     getOrder();
     createOrder();
