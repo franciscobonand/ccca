@@ -2,6 +2,7 @@ import PocketBase from 'pocketbase';
 import Database from './Interface';
 import Coupon from '../entity/Coupon';
 import Product from '../entity/Product';
+import Address from '../entity/Address';
 
 export default class PocketBaseDB implements Database {
     COUPON_COLL = "coupons";
@@ -45,10 +46,31 @@ export default class PocketBaseDB implements Database {
     updateClient(){}
     deleteClient(){}
 
-    getAddress(){}
-    createAddress(){}
-    updateAddress(){}
-    deleteAddress(){}
+    async getAddress(id: string): Promise<Address> {
+        const record = await this.conn.collection(this.ADDRESS_COLL).getOne<Address>(id);
+        return new Address(
+            record.id,
+            record.postalcode,
+        );
+    }
+    async createAddress(addr: Address): Promise<Address> {
+        const record = await this.conn.collection(this.ADDRESS_COLL).create<Address>(addr);
+        return new Address(
+            record.id,
+            record.postalcode,
+        );
+    }
+    async updateAddress(addr: Address): Promise<Address> {
+        const record = await this.conn.collection(this.ADDRESS_COLL).update<Address>(addr.id, addr);
+        return new Address(
+            record.id,
+            record.postalcode,
+        );
+    }
+    async deleteAddress(id: string): Promise<null> {
+        await this.conn.collection(this.ADDRESS_COLL).delete(id); 
+        return null;
+    }
 
     async getProduct(id: string): Promise<Product> {
         const record = await this.conn.collection(this.PRODUCT_COLL).getOne<Product>(id);

@@ -2,6 +2,7 @@ import express from 'express';
 import Database from '../../db/Interface';
 import { getCoupon, createCoupon, updateCoupon, deleteCoupon } from './Coupon';
 import { getProduct, createProduct, updateProduct, deleteProduct } from './Product';
+import { getAddress, createAddress, updateAddress, deleteAddress } from './Address';
 
 export type HandlerFunc = (req: express.Request, resp: express.Response) => void;
 
@@ -24,5 +25,14 @@ export class Handler {
         productRouter.put("/", updateProduct(this.db));
         productRouter.delete("/:id", deleteProduct(this.db));
         return productRouter;
+    }
+
+    addressHandler(): express.Router {
+        const addressRouter = express.Router();
+        addressRouter.get("/:id", getAddress(this.db));
+        addressRouter.post("/", createAddress(this.db));
+        addressRouter.put("/", updateAddress(this.db));
+        addressRouter.delete("/:id", deleteAddress(this.db));
+        return addressRouter;
     }
 }

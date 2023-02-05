@@ -17,6 +17,7 @@ export default class Server {
         const handler = new Handler(this.db);
         this.app.use("/coupon", handler.couponHandler());
         this.app.use("/product", handler.productHandler());
+        this.app.use("/address", handler.addressHandler());
         this.app.listen(
             this.port,
             () => console.log("Server is running on port", this.port)
