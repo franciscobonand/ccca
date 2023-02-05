@@ -3,6 +3,7 @@ import Database from '../../db/Interface';
 import { getCoupon, createCoupon, updateCoupon, deleteCoupon } from './Coupon';
 import { getProduct, createProduct, updateProduct, deleteProduct } from './Product';
 import { getAddress, createAddress, updateAddress, deleteAddress } from './Address';
+import { getClient, createClient, updateClient, deleteClient } from './Client';
 
 export type HandlerFunc = (req: express.Request, resp: express.Response) => void;
 
@@ -34,5 +35,14 @@ export class Handler {
         addressRouter.put("/", updateAddress(this.db));
         addressRouter.delete("/:id", deleteAddress(this.db));
         return addressRouter;
+    }
+
+    clientHandler(): express.Router {
+        const clientRouter = express.Router();
+        clientRouter.get("/:id", getClient(this.db));
+        clientRouter.post("/", createClient(this.db));
+        clientRouter.put("/", updateClient(this.db));
+        clientRouter.delete("/:id", deleteClient(this.db));
+        return clientRouter;
     }
 }

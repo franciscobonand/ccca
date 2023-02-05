@@ -1,6 +1,7 @@
 import Coupon from '../entity/Coupon';
 import Product from '../entity/Product';
 import Address from '../entity/Address';
+import Client from '../entity/Client';
 
 export default interface Database {
     health(): Promise<boolean>;
@@ -10,10 +11,10 @@ export default interface Database {
     updateCoupon(coupon: Coupon): Promise<Coupon>;
     deleteCoupon(id: string): Promise<null>;
 
-    getClient();
-    createClient();
-    updateClient();
-    deleteClient();
+    getClient(id: string): Promise<Client>;
+    createClient(client: Client): Promise<Client>;
+    updateClient(client: Client): Promise<Client>;
+    deleteClient(id: string): Promise<null>;
 
     getAddress(id: string): Promise<Address>;
     createAddress(addr: Address): Promise<Address>;

@@ -5,17 +5,17 @@ export default class Client {
     addresses: Address[]
 
     constructor(
+        readonly id: string = "",
         readonly fullname: string,
         cpf: string,
-        address: Address,
-        public id?: string,
+        addresses: Address[],
     ) {
-        const formatedCPF = cpf.replace(/\D/g, "");
+        const formatedCPF = cpf.replace(/\D/g, "").trim();
         if (!this.isValidCPF(formatedCPF))
             throw new Error("Invalid CPF");
         
-        this.addresses = [address]
-        this.cpf = formatedCPF
+        this.addresses = addresses;
+        this.cpf = formatedCPF;
     }
 
     isValidCPF (cpf: string): boolean {
@@ -27,12 +27,22 @@ export default class Client {
         return actualCheckerDigits == expectedCheckerDigits;
     }
 
+    static isClient(data: any): boolean {
+        if (!data.addresses || data.addresses.length == 0) return false;
+        for (let i = 0; i < data.addresses.length; i++) {
+            if (!Address.isAddress(data.addresses[i])) return false;
+        }
+        const validName = data.fullname && typeof data.fullname == "string";
+        const validCPF = data.cpf && typeof data.cpf == "string";
+        return validName && validCPF;
+    }
+
     private allEqualDigits(cpf: string): boolean {
         return cpf.split("").every(digit => digit === cpf[0]);
     }
 
     private getCPFCheckerDigits(cpf: string): string {
-        const cpfNonVerifyingDigits = 9
+        const cpfNonVerifyingDigits = 9;
         let numeratorDigit1 = 0;
         let numeratorDigit2 = 0;
 
