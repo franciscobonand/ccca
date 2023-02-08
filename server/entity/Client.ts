@@ -27,16 +27,6 @@ export default class Client {
         return actualCheckerDigits == expectedCheckerDigits;
     }
 
-    static isClient(data: any): boolean {
-        if (!data.addresses || data.addresses.length == 0) return false;
-        for (let i = 0; i < data.addresses.length; i++) {
-            if (!Address.isAddress(data.addresses[i])) return false;
-        }
-        const validName = data.fullname && typeof data.fullname == "string";
-        const validCPF = data.cpf && typeof data.cpf == "string";
-        return validName && validCPF;
-    }
-
     private allEqualDigits(cpf: string): boolean {
         return cpf.split("").every(digit => digit === cpf[0]);
     }

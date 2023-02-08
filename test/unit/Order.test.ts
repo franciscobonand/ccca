@@ -1,11 +1,11 @@
-import { Order, OrderItem, PaymentMethod } from "../server/entity/Order"
-import Client from "../server/entity/Client"
-import Address from "../server/entity/Address"
-import Product from "../server/entity/Product"
-import Coupon from "../server/entity/Coupon"
+import { Order, OrderItem, PaymentMethod } from "../../server/entity/Order"
+import Client from "../../server/entity/Client"
+import Address from "../../server/entity/Address"
+import Product from "../../server/entity/Product"
+import Coupon from "../../server/entity/Coupon"
 
 const address = new Address("", "65452123") 
-const client = new Client("Alberto","411.502.100-44", address) 
+const client = new Client("", "Alberto","411.502.100-44", [address]) 
 const product1 = new Product("", "Bola", "Bola branca de futebol", 10.5, 5)
 const product2 = new Product("", "Caneca", "Caneca colorida grande", 5.5, 5)
 const product3 = new Product("", "Óculos", "Óculos azul", 15, 5)

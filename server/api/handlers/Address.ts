@@ -20,10 +20,6 @@ export function getAddress(db: Database): HandlerFunc {
 export function createAddress(db: Database): HandlerFunc {
     return async function(req: Request, resp: Response) {
         const body = req.body;
-        if (!Address.isAddress(body)) {
-            resp.status(400).send("Invalid address");
-            return;
-        }
         console.log("creating new address"); 
         try {
             const address = new Address(
@@ -41,18 +37,15 @@ export function createAddress(db: Database): HandlerFunc {
 
 export function updateAddress(db: Database): HandlerFunc {
     return async function(req: Request, resp: Response) {
+        const id = req.params.id;
         const body = req.body;
-        if (!Address.isAddress(body) || !body.id) {
-            resp.status(400).send("Invalid address");
-            return;
-        }
         console.log("updating address"); 
         try {
             const address = new Address(
-                body.id,
+                "",
                 body.postalcode,
             );
-            const dbResponse = await db.updateAddress(address);
+            const dbResponse = await db.updateAddress(id, address);
             resp.status(200).json(dbResponse);
         } catch (error) {
             console.log(error);

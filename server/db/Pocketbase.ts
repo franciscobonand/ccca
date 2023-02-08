@@ -33,8 +33,8 @@ export default class PocketBaseDB implements Database {
         const record = await this.conn.collection(this.COUPON_COLL).create<Coupon>(coupon);
         return new Coupon(record.id, record.name, record.discount);
     }
-    async updateCoupon(coupon: Coupon): Promise<Coupon> {
-        const record = await this.conn.collection(this.COUPON_COLL).update<Coupon>(coupon.id, coupon);
+    async updateCoupon(id: string, coupon: Coupon): Promise<Coupon> {
+        const record = await this.conn.collection(this.COUPON_COLL).update<Coupon>(id, coupon);
         return new Coupon(record.id, record.name, record.discount);
     }
     async deleteCoupon(id: string): Promise<null> {
@@ -55,8 +55,8 @@ export default class PocketBaseDB implements Database {
         });
         return new Client(record.id, record.fullname, record.cpf, record.addresses);
     }
-    async updateClient(client: Client): Promise<Client> {
-        const record = await this.conn.collection(this.CLIENT_COLL).update<Client>(client.id, {
+    async updateClient(id: string, client: Client): Promise<Client> {
+        const record = await this.conn.collection(this.CLIENT_COLL).update<Client>(id, {
             "fullname": client.fullname,
             "cpf": client.cpf,
             "addresses": client.addresses.map(addr => addr.id),
@@ -83,8 +83,8 @@ export default class PocketBaseDB implements Database {
             record.postalcode,
         );
     }
-    async updateAddress(addr: Address): Promise<Address> {
-        const record = await this.conn.collection(this.ADDRESS_COLL).update<Address>(addr.id, addr);
+    async updateAddress(id: string, addr: Address): Promise<Address> {
+        const record = await this.conn.collection(this.ADDRESS_COLL).update<Address>(id, addr);
         return new Address(
             record.id,
             record.postalcode,
@@ -98,15 +98,15 @@ export default class PocketBaseDB implements Database {
     // Products
     async getProduct(id: string): Promise<Product> {
         const record = await this.conn.collection(this.PRODUCT_COLL).getOne<Product>(id);
-        return new Product(record.id, record.name, record.description, record.price, record.qntAvailable);
+        return new Product(record.id, record.name, record.description, record.price);
     }
     async createProduct(product: Product): Promise<Product> {
         const record = await this.conn.collection(this.PRODUCT_COLL).create<Product>(product);
-        return new Product(record.id, record.name, record.description, record.price, record.qntAvailable);
+        return new Product(record.id, record.name, record.description, record.price);
     }
-    async updateProduct(product: Product): Promise<Product> {
-        const record = await this.conn.collection(this.PRODUCT_COLL).update<Product>(product.id, product);
-        return new Product(record.id, record.name, record.description, record.price, record.qntAvailable);
+    async updateProduct(id: string, product: Product): Promise<Product> {
+        const record = await this.conn.collection(this.PRODUCT_COLL).update<Product>(id, product);
+        return new Product(record.id, record.name, record.description, record.price);
     }
     async deleteProduct(id: string): Promise<null> {
         await this.conn.collection(this.PRODUCT_COLL).delete(id); 

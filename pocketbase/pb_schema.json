@@ -96,28 +96,16 @@
         "required": false,
         "unique": false,
         "options": {
-          "min": 0.1,
-          "max": null
-        }
-      },
-      {
-        "id": "izhbql8s",
-        "name": "qnt_available",
-        "type": "number",
-        "system": false,
-        "required": false,
-        "unique": false,
-        "options": {
-          "min": 0,
+          "min": 0.01,
           "max": null
         }
       }
     ],
     "listRule": null,
-    "viewRule": null,
-    "createRule": null,
-    "updateRule": null,
-    "deleteRule": null,
+    "viewRule": "",
+    "createRule": "",
+    "updateRule": "",
+    "deleteRule": "",
     "options": {}
   },
   {
@@ -196,7 +184,7 @@
         "name": "addresses",
         "type": "relation",
         "system": false,
-        "required": false,
+        "required": true,
         "unique": false,
         "options": {
           "maxSelect": null,
@@ -206,10 +194,10 @@
       }
     ],
     "listRule": null,
-    "viewRule": null,
-    "createRule": null,
-    "updateRule": null,
-    "deleteRule": null,
+    "viewRule": "",
+    "createRule": "",
+    "updateRule": "",
+    "deleteRule": "",
     "options": {}
   },
   {
@@ -230,78 +218,13 @@
           "max": null,
           "pattern": ""
         }
-      },
-      {
-        "id": "0ln159et",
-        "name": "apt",
-        "type": "text",
-        "system": false,
-        "required": false,
-        "unique": false,
-        "options": {
-          "min": null,
-          "max": null,
-          "pattern": ""
-        }
-      },
-      {
-        "id": "mwbalohb",
-        "name": "street",
-        "type": "text",
-        "system": false,
-        "required": true,
-        "unique": false,
-        "options": {
-          "min": null,
-          "max": 100,
-          "pattern": ""
-        }
-      },
-      {
-        "id": "dmi8jmjl",
-        "name": "city",
-        "type": "text",
-        "system": false,
-        "required": true,
-        "unique": false,
-        "options": {
-          "min": null,
-          "max": 40,
-          "pattern": ""
-        }
-      },
-      {
-        "id": "hh3ympd0",
-        "name": "state",
-        "type": "text",
-        "system": false,
-        "required": true,
-        "unique": false,
-        "options": {
-          "min": null,
-          "max": 50,
-          "pattern": ""
-        }
-      },
-      {
-        "id": "uzzsxduw",
-        "name": "country",
-        "type": "text",
-        "system": false,
-        "required": true,
-        "unique": false,
-        "options": {
-          "min": null,
-          "max": 35,
-          "pattern": ""
-        }
       }
     ],
     "listRule": null,
-    "viewRule": null,
-    "createRule": null,
-    "updateRule": null,
-    "deleteRule": null,
+    "viewRule": "",
+    "createRule": "",
+    "updateRule": "",
+    "deleteRule": "",
     "options": {}
   },
   {

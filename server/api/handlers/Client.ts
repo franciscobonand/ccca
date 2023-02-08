@@ -21,10 +21,6 @@ export function getClient(db: Database): HandlerFunc {
 export function createClient(db: Database): HandlerFunc {
     return async function(req: Request, resp: Response) {
         const body = req.body;
-        if (!Client.isClient(body)) {
-            resp.status(400).send("Invalid client");
-            return;
-        }
         console.log("creating new client"); 
         try {
             const client = new Client(
@@ -46,22 +42,19 @@ export function createClient(db: Database): HandlerFunc {
 
 export function updateClient(db: Database): HandlerFunc {
     return async function(req: Request, resp: Response) {
+        const id = req.params.id;
         const body = req.body;
-        if (!Client.isClient(body) || !body.id) {
-            resp.status(400).send("Invalid client");
-            return;
-        }
         console.log("updating client"); 
         try {
             const client = new Client(
-                body.id,
+                "",
                 body.fullname,
                 body.cpf,
                 body.addresses,
             );
             const addrs = await fetchAddresses(db, body.addresses);
             client.addresses = addrs;
-            const dbResponse = await db.updateClient(client);
+            const dbResponse = await db.updateClient(id, client);
             resp.status(200).json(dbResponse);
         } catch (error) {
             console.log(error);
@@ -91,7 +84,6 @@ async function fetchAddresses(db: Database, addrs: Address[]): Promise<Address[]
             addrs[i] = await db.createAddress(addr);
             continue;
         }
-
         addrs[i] = await db.getAddress(addr.id);
     }
 

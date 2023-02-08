@@ -1,4 +1,4 @@
-import Product from "../server/entity/Product"
+import Product from "../../server/entity/Product"
 
 test("Deve criar um produto válido", () => {
     const product = new Product("", "Bola", "Bola branca de futebol", 10.5, 5)

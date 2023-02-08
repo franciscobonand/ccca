@@ -20,10 +20,6 @@ export function getCoupon(db: Database): HandlerFunc {
 export function createCoupon(db: Database): HandlerFunc {
     return async function(req: Request, resp: Response) {
         const body = req.body;
-        if (!Coupon.isCoupon(body)) {
-            resp.status(400).send("Invalid coupon");
-            return;
-        }
         console.log("creating new coupon"); 
         try {
             const coupon = new Coupon("", body.name, body.discount);
@@ -38,15 +34,12 @@ export function createCoupon(db: Database): HandlerFunc {
 
 export function updateCoupon(db: Database): HandlerFunc {
     return async function(req: Request, resp: Response) {
+        const id = req.params.id;
         const body = req.body;
-        if (!Coupon.isCoupon(body) || !body.id) {
-            resp.status(400).send("Invalid coupon");
-            return;
-        }
         console.log("updating coupon"); 
         try {
-            const coupon = new Coupon(body.id, body.name, body.discount);
-            const dbResponse = await db.updateCoupon(coupon);
+            const coupon = new Coupon("", body.name, body.discount);
+            const dbResponse = await db.updateCoupon(id, coupon);
             resp.status(200).json(dbResponse);
         } catch (error) {
             console.log(error);

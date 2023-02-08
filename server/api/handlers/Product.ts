@@ -20,10 +20,6 @@ export function getProduct(db: Database): HandlerFunc {
 export function createProduct(db: Database): HandlerFunc {
     return async function(req: Request, resp: Response) {
         const body = req.body;
-        if (!Product.isProduct(body)) {
-            resp.status(400).send("Invalid product");
-            return;
-        }
         console.log("creating new product"); 
         try {
             const product = new Product(
@@ -31,7 +27,6 @@ export function createProduct(db: Database): HandlerFunc {
                 body.name,
                 body.description,
                 body.price,
-                body.qntAvailable,
             );
             const dbResponse = await db.createProduct(product);
             resp.status(200).json(dbResponse);
@@ -44,21 +39,17 @@ export function createProduct(db: Database): HandlerFunc {
 
 export function updateProduct(db: Database): HandlerFunc {
     return async function(req: Request, resp: Response) {
+        const id = req.params.id;
         const body = req.body;
-        if (!Product.isProduct(body) || !body.id) {
-            resp.status(400).send("Invalid product");
-            return;
-        }
         console.log("updating product"); 
         try {
             const product = new Product(
-                body.id,
+                "",
                 body.name,
                 body.description,
                 body.price,
-                body.qntAvailable,
             );
-            const dbResponse = await db.updateProduct(product);
+            const dbResponse = await db.updateProduct(id, product);
             resp.status(200).json(dbResponse);
         } catch (error) {
             console.log(error);

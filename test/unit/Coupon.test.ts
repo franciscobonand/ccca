@@ -1,4 +1,4 @@
-import Coupon from "../server/entity/Coupon"
+import Coupon from "../../server/entity/Coupon"
 
 test("Deve criar um cupom válido", () => {
     const coupon = new Coupon("", "PROMO", 0.5)

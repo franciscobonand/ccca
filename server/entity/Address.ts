@@ -7,9 +7,4 @@ export default class Address {
     getShippingCost(): number {
         return 0;
     }
-
-    static isAddress(data: any): boolean {
-        const validPostalcode = data.postalcode && typeof data.postalcode == "string";
-        return validPostalcode;
-    }
 }
