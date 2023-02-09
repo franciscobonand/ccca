@@ -3,8 +3,4 @@ export default class Address {
         readonly id: string = "",
         readonly postalcode: string,
     ) {}
-
-    getShippingCost(): number {
-        return 0;
-    }
 }

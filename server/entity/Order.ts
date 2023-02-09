@@ -3,21 +3,6 @@ import Address from "./Address"
 import Client from "./Client"
 import Coupon from "./Coupon"
 
-enum PaymentMethod {
-    CreditCard = "CreditCard",
-    BankTransfer = "BankTransfer",
-    PIX = "PIX",
-    DepositSlip = "DepositSlip",
-}
-
-enum OrderStatus {
-    Processing = "Processing",
-    Shipped = "Shipped",
-    InTransit = "InTransit",
-    Delivered = "Delivered",
-    Canceled = "Canceled",
-}
-
 class OrderItem {
     constructor(
         readonly product: Product,
@@ -27,23 +12,20 @@ class OrderItem {
 
 class Order {
     totalValue: number
-    status: OrderStatus
     coupons: Coupon[]
 
     constructor(
         readonly items: OrderItem[],
         readonly address: Address,
         readonly client: Client,
-        readonly paymentMethod: PaymentMethod,
         coupons: Coupon[] = [],
         public id?: string,
     ){
-        this.totalValue = this.calculateTotal(items, coupons, address);
-        this.status = OrderStatus.Processing;
+        this.totalValue = this.calculateTotal(items, coupons);
         this.coupons = coupons;
     }
 
-    calculateTotal(items: OrderItem[], coupons: Coupon[], address: Address): number {
+    calculateTotal(items: OrderItem[], coupons: Coupon[]): number {
         let itemsValue = 0;
         let maxDiscount = 0;
         for (let i = 0; i < items.length; i++) {
@@ -51,12 +33,12 @@ class Order {
         }
         for (let i = 0; i < coupons.length; i++) {
             if (coupons[i].discount > maxDiscount) {
-                maxDiscount = coupons[i].discount
+                maxDiscount = coupons[i].discount;
             }
         }
-        const totalDiscount = maxDiscount || 1
-        return (itemsValue * totalDiscount) + address.getShippingCost()
+        const totalDiscount = maxDiscount || 1;
+        return (itemsValue * totalDiscount);
     }
 }
 
-export { Order, OrderItem, PaymentMethod, OrderStatus };
+export { Order, OrderItem };

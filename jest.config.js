@@ -2,5 +2,8 @@
 module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
-  modulePathIgnorePatterns: ['<rootDir>/classes/'],
+  modulePathIgnorePatterns: [
+      '<rootDir>/classes/',
+      '<rootDir>/server/db/MockDB.ts',
+  ]
 };

@@ -1,4 +1,4 @@
-import { Order, OrderItem, PaymentMethod } from "../../server/entity/Order"
+import { Order, OrderItem } from "../../server/entity/Order"
 import Client from "../../server/entity/Client"
 import Address from "../../server/entity/Address"
 import Product from "../../server/entity/Product"
@@ -6,9 +6,9 @@ import Coupon from "../../server/entity/Coupon"
 
 const address = new Address("", "65452123") 
 const client = new Client("", "Alberto","411.502.100-44", [address]) 
-const product1 = new Product("", "Bola", "Bola branca de futebol", 10.5, 5)
-const product2 = new Product("", "Caneca", "Caneca colorida grande", 5.5, 5)
-const product3 = new Product("", "Óculos", "Óculos azul", 15, 5)
+const product1 = new Product("", "Bola", "Bola branca de futebol", 10.5)
+const product2 = new Product("", "Caneca", "Caneca colorida grande", 5.5)
+const product3 = new Product("", "Óculos", "Óculos azul", 15)
 
 
 test("Deve criar um pedido válido sem desconto", () => {
@@ -22,7 +22,6 @@ test("Deve criar um pedido válido sem desconto", () => {
         items, 
         address,
         client,
-        PaymentMethod.CreditCard
     )
     expect(order.totalValue).toBe(expectedTotal)
 })
@@ -38,7 +37,6 @@ test("Deve criar um pedido válido com um cupom de desconto", () => {
         items, 
         address,
         client,
-        PaymentMethod.CreditCard,
         [coupon]
     )
     expect(order.totalValue).toBe(expectedTotal)
@@ -57,7 +55,6 @@ test("Deve criar um pedido válido com múltiplos cupons de desconto", () => {
         items, 
         address,
         client,
-        PaymentMethod.CreditCard,
         [coupon1, coupon2, coupon3]
     )
     expect(order.totalValue).toBe(expectedTotal)

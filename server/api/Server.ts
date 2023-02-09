@@ -1,4 +1,5 @@
 import express from 'express';
+import * as http from 'http';
 import Database from '../db/Interface';
 import { Handler } from './handlers/Handler';
 
@@ -13,21 +14,16 @@ export default class Server {
         this.app.use(express.json());
     }
 
-    run() {
+    run(): http.Server {
         const handler = new Handler(this.db);
         this.app.use("/coupon", handler.couponHandler());
         this.app.use("/product", handler.productHandler());
         this.app.use("/address", handler.addressHandler());
         this.app.use("/client", handler.clientHandler());
 
-        try {
-            this.app.listen(
-                this.port,
-                () => console.log("Server is running on port", this.port),
-            );
-        } catch (error) {
-           console.error(error);
-           process.exit(1);
-        }
+        return this.app.listen(
+            this.port,
+            () => console.log("Server is running on port", this.port),
+        );
     }
 }
