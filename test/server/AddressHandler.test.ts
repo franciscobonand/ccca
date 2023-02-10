@@ -3,7 +3,7 @@ import sinon from "sinon";
 import * as http from "http";
 import { ZodIssue } from "zod";
 import Server from "../../server/api/Server";
-import MockDB from "../../server/db/MockDB";
+import MockDB from "../MockDB";
 
 axios.defaults.validateStatus = function () {
 	return true;

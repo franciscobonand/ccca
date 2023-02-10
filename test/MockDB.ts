@@ -1,8 +1,8 @@
-import Database from './Interface';
-import Coupon from '../entity/Coupon';
-import Product from '../entity/Product';
-import Address from '../entity/Address';
-import Client from '../entity/Client';
+import Database from "../server/db/Interface";
+import Coupon from "../server/entity/Coupon";
+import Product from "../server/entity/Product";
+import Address from "../server/entity/Address";
+import Client from "../server/entity/Client";
 
 export default class MockDB implements Database {
     constructor() {}
