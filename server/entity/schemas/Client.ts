@@ -20,7 +20,7 @@ const clientCommandSchema = z.object({
         postalcode: z.string({
             required_error: "'postalcode' is required",
         })
-    }).array().nonempty(),
+    }).array().nonempty("'addresses' is required"),
 });
 
 export const clientCreateSchema = z.object({
