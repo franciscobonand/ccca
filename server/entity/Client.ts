@@ -1,20 +1,15 @@
-import Address from "./Address";
-
 export default class Client {
     cpf: string
-    addresses: Address[]
 
     constructor(
         readonly id: string = "",
         readonly fullname: string,
         cpf: string,
-        addresses: Address[],
     ) {
         const formatedCPF = cpf.replace(/\D/g, "").trim();
         if (!this.isValidCPF(formatedCPF))
             throw new Error("Invalid CPF");
         
-        this.addresses = addresses;
         this.cpf = formatedCPF;
     }
 

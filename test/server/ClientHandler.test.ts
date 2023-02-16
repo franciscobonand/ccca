@@ -27,32 +27,12 @@ test("Deve criar um novo cliente", async () => {
         id: "randomID",
         fullname: "Diego Augusto Porto",
         cpf: "194.081.740-46",
-        addresses: [
-            {
-                id: "addrID",
-                postalcode: "78954123",
-            },
-            {
-                postalcode: "96456256",
-            },
-        ],
     }
     const mockClientHandler = sinon.mock(MockDB.prototype);
     mockClientHandler.expects("createClient").once().resolves(expectedReturn);
-    mockClientHandler.expects("createAddress").once();
-    mockClientHandler.expects("getAddress").once();
     const input = {
         fullname: "Diego Augusto Porto",
         cpf: "194.081.740-46",
-        addresses: [
-            {
-                id: "addrID",
-                postalcode: "78954123",
-            },
-            {
-                postalcode: "96456256",
-            },
-        ],
     }
     const resp = await axios.post(`${serverAddr}/client`, input);
     expect(resp.status).toBe(200);
@@ -84,15 +64,6 @@ test("Não deve criar um novo cliente sem nome", async () => {
 test("Não deve criar um novo cliente sem CPF", async () => {
     const input = {
         fullname: "Diego Augusto Porto",
-        addresses: [
-            {
-                id: "addrID",
-                postalcode: "78954123",
-            },
-            {
-                postalcode: "96456256",
-            },
-        ],
     }
     const resp = await axios.post(`${serverAddr}/client`, input);
     expect(resp.status).toBe(400);
@@ -102,33 +73,10 @@ test("Não deve criar um novo cliente sem CPF", async () => {
     expect(fullnameErr).toBeTruthy();
 })
 
-test("Não deve criar um novo cliente sem endereço", async () => {
-    const input = {
-        fullname: "Diego Augusto Porto",
-        cpf: "470.611.643-01",
-        addresses: [],
-    }
-    const resp = await axios.post(`${serverAddr}/client`, input);
-    expect(resp.status).toBe(400);
-    const fullnameErr = resp.data.issues.find(
-        (issue: ZodIssue) => issue.message == "'addresses' is required",
-    );
-    expect(fullnameErr).toBeTruthy();
-})
-
 test("Não deve criar um novo cliente com cpf inválido", async () => {
     const input = {
         fullname: "Diego Augusto Porto",
         cpf: "470.611.643-11",
-        addresses: [
-            {
-                id: "addrID",
-                postalcode: "78954123",
-            },
-            {
-                postalcode: "96456256",
-            },
-        ],
     }
     const resp = await axios.post(`${serverAddr}/client`, input);
     expect(resp.status).toBe(500);
@@ -141,15 +89,6 @@ test("Não deve criar um cliente devido a erro no banco de dados", async () => {
     const input = {
         fullname: "Diego Augusto Porto",
         cpf: "470.611.643-01",
-        addresses: [
-            {
-                id: "addrID",
-                postalcode: "78954123",
-            },
-            {
-                postalcode: "96456256",
-            },
-        ],
     }
     const resp = await axios.post(`${serverAddr}/client`, input);
     expect(resp.status).toBe(500);
@@ -163,15 +102,6 @@ test("Deve obter um cliente existente", async () => {
         id: "randomID",
         fullname: "Diego Augusto Porto",
         cpf: "470.611.643-01",
-        addresses: [
-            {
-                id: "addrID",
-                postalcode: "78954123",
-            },
-            {
-                postalcode: "96456256",
-            },
-        ],
     }
     const mockClientHandler = sinon.mock(MockDB.prototype);
     mockClientHandler.expects("getClient").once().resolves(expectedReturn);
@@ -196,32 +126,12 @@ test("Deve atualizar um novo cliente", async () => {
         id: "randomID",
         fullname: "Diego Augusto Porto",
         cpf: "194.081.740-46",
-        addresses: [
-            {
-                id: "addrID",
-                postalcode: "78954123",
-            },
-            {
-                postalcode: "96456256",
-            },
-        ],
     }
     const mockClientHandler = sinon.mock(MockDB.prototype);
     mockClientHandler.expects("updateClient").once().resolves(expectedReturn);
-    mockClientHandler.expects("createAddress").once();
-    mockClientHandler.expects("getAddress").once();
     const input = {
         fullname: "Diego Augusto Porto",
         cpf: "194.081.740-46",
-        addresses: [
-            {
-                id: "addrID",
-                postalcode: "78954123",
-            },
-            {
-                postalcode: "96456256",
-            },
-        ],
     }
     const resp = await axios.put(`${serverAddr}/client/randomID`, input);
     expect(resp.status).toBe(200);
@@ -232,15 +142,6 @@ test("Deve atualizar um novo cliente", async () => {
 test("Não deve atualizar um novo cliente sem nome", async () => {
     const input = {
         cpf: "470.611.643-01",
-        addresses: [
-            {
-                id: "addrID",
-                postalcode: "78954123",
-            },
-            {
-                postalcode: "96456256",
-            },
-        ],
     }
     const resp = await axios.put(`${serverAddr}/client/randomID`, input);
     expect(resp.status).toBe(400);
@@ -253,15 +154,6 @@ test("Não deve atualizar um novo cliente sem nome", async () => {
 test("Não deve atualizar um novo cliente sem CPF", async () => {
     const input = {
         fullname: "Diego Augusto Porto",
-        addresses: [
-            {
-                id: "addrID",
-                postalcode: "78954123",
-            },
-            {
-                postalcode: "96456256",
-            },
-        ],
     }
     const resp = await axios.put(`${serverAddr}/client/randomID`, input);
     expect(resp.status).toBe(400);
@@ -271,33 +163,10 @@ test("Não deve atualizar um novo cliente sem CPF", async () => {
     expect(fullnameErr).toBeTruthy();
 })
 
-test("Não deve atualizar um novo cliente sem endereço", async () => {
-    const input = {
-        fullname: "Diego Augusto Porto",
-        cpf: "470.611.643-01",
-        addresses: [],
-    }
-    const resp = await axios.put(`${serverAddr}/client/randomID`, input);
-    expect(resp.status).toBe(400);
-    const fullnameErr = resp.data.issues.find(
-        (issue: ZodIssue) => issue.message == "'addresses' is required",
-    );
-    expect(fullnameErr).toBeTruthy();
-})
-
 test("Não deve atualizar um novo cliente com cpf inválido", async () => {
     const input = {
         fullname: "Diego Augusto Porto",
         cpf: "470.611.643-11",
-        addresses: [
-            {
-                id: "addrID",
-                postalcode: "78954123",
-            },
-            {
-                postalcode: "96456256",
-            },
-        ],
     }
     const resp = await axios.put(`${serverAddr}/client/randomID`, input);
     expect(resp.status).toBe(500);
@@ -310,15 +179,6 @@ test("Não deve atualizar um cliente devido a erro no banco de dados", async () 
     const input = {
         fullname: "Diego Augusto Porto",
         cpf: "470.611.643-01",
-        addresses: [
-            {
-                id: "addrID",
-                postalcode: "78954123",
-            },
-            {
-                postalcode: "96456256",
-            },
-        ],
     }
     const resp = await axios.put(`${serverAddr}/client/randomID`, input);
     expect(resp.status).toBe(500);

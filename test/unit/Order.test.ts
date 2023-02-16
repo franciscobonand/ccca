@@ -1,61 +1,50 @@
-import { Order, OrderItem } from "../../server/entity/Order"
+import { Order } from "../../server/entity/Order"
 import Client from "../../server/entity/Client"
-import Address from "../../server/entity/Address"
 import Product from "../../server/entity/Product"
 import Coupon from "../../server/entity/Coupon"
 
-const address = new Address("", "65452123") 
-const client = new Client("", "Alberto","411.502.100-44", [address]) 
-const product1 = new Product("", "Bola", "Bola branca de futebol", 10.5)
-const product2 = new Product("", "Caneca", "Caneca colorida grande", 5.5)
-const product3 = new Product("", "Óculos", "Óculos azul", 15)
+const client = new Client("", "Alberto","411.502.100-44") 
+const prod1 = new Product("1", "Bola", "Bola branca de futebol", 10.5)
+const prod2 = new Product("2", "Caneca", "Caneca colorida grande", 5.5)
+const prod3 = new Product("3", "Óculos", "Óculos azul", 15)
+const coupon = new Coupon("1", "PROMO20", 0.2);
 
 
-test("Deve criar um pedido válido sem desconto", () => {
-    const items: OrderItem[] = [
-        { product: product1, quantity: 2 },
-        { product: product2, quantity: 4 },
-        { product: product3, quantity: 1 },
-    ];
-    const expectedTotal = product1.price * 2 + product2.price * 4 + product3.price * 1
-    const order = new Order(
-        items, 
-        address,
-        client,
-    )
-    expect(order.totalValue).toBe(expectedTotal)
+test("Deve criar um pedido vazio", () => {
+    const order = new Order("", client);
+    const total = order.getTotal();
+    expect(total).toBe(0);
 })
 
-test("Deve criar um pedido válido com um cupom de desconto", () => {
-    const items: OrderItem[] = [
-        { product: product1, quantity: 2 },
-        { product: product2, quantity: 4 },
-    ];
-    const coupon = new Coupon("", "PROMO", 0.5)
-    const expectedTotal = (product1.price * 2 + product2.price * 4) * coupon.discount
-    const order = new Order(
-        items, 
-        address,
-        client,
-        [coupon]
-    )
-    expect(order.totalValue).toBe(expectedTotal)
+test("Deve criar um pedido com três produtos", () => {
+    const order = new Order("", client);
+    order.addItem(prod1, 1);
+    order.addItem(prod2, 1);
+    order.addItem(prod3, 1);
+    const total = order.getTotal();
+    const expectedTotal = prod1.price + prod2.price + prod3.price; 
+    expect(total).toBe(expectedTotal);
 })
 
-test("Deve criar um pedido válido com múltiplos cupons de desconto", () => {
-    const items: OrderItem[] = [
-        { product: product1, quantity: 2 },
-        { product: product2, quantity: 4 },
-    ];
-    const coupon1 = new Coupon("", "PROMO1", 0.5)
-    const coupon2 = new Coupon("", "PROMO2", 0.25)
-    const coupon3 = new Coupon("", "PROMO3", 0.75)
-    const expectedTotal = (product1.price * 2 + product2.price * 4) * coupon3.discount
-    const order = new Order(
-        items, 
-        address,
-        client,
-        [coupon1, coupon2, coupon3]
-    )
-    expect(order.totalValue).toBe(expectedTotal)
+test("Deve criar um pedido com três produtos e cupom de desconto", () => {
+    const order = new Order("", client);
+    order.addItem(prod1, 1);
+    order.addItem(prod2, 1);
+    order.addItem(prod3, 1);
+    order.addCoupon(coupon);
+    const total = order.getTotal();
+    let expectedTotal = prod1.price + prod2.price + prod3.price; 
+    expectedTotal -= (expectedTotal * coupon.discount);
+    expect(total).toBe(expectedTotal);
+})
+
+test("Não deve adicionar um produto com quantidade negativa a um pedido", () => {
+    const order = new Order("", client);
+    expect(() => order.addItem(prod3, -1)).toThrow(new Error("Invalid quantity"));
+})
+
+test("Não deve adicionar um produto repetido a um pedido", () => {
+    const order = new Order("", client);
+    order.addItem(prod3, 1);
+    expect(() => order.addItem(prod3, 1)).toThrow(new Error("Duplicated item"));
 })

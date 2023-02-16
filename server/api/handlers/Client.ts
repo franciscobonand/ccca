@@ -27,10 +27,7 @@ export function createClient(db: Database): HandlerFunc {
                 "",
                 body.fullname,
                 body.cpf,
-                body.addresses,
             );
-            const addrs = await fetchAddresses(db, body.addresses);
-            client.addresses = addrs;
             const dbResponse = await db.createClient(client);
             resp.status(200).json(dbResponse);
         } catch (error) {
@@ -50,10 +47,7 @@ export function updateClient(db: Database): HandlerFunc {
                 "",
                 body.fullname,
                 body.cpf,
-                body.addresses,
             );
-            const addrs = await fetchAddresses(db, body.addresses);
-            client.addresses = addrs;
             const dbResponse = await db.updateClient(id, client);
             resp.status(200).json(dbResponse);
         } catch (error) {
@@ -76,16 +70,3 @@ export function deleteClient(db: Database): HandlerFunc {
         }
     }
 };
-
-async function fetchAddresses(db: Database, addrs: Address[]): Promise<Address[]> {
-    for (let i = 0; i < addrs.length; i++) {
-        const addr = addrs[i];
-        if (!addr.id) {
-            addrs[i] = await db.createAddress(addr);
-            continue;
-        }
-        addrs[i] = await db.getAddress(addr.id);
-    }
-
-    return addrs;
-}

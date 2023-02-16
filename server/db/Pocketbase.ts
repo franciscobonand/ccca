@@ -45,23 +45,15 @@ export default class PocketBaseDB implements Database {
     // Clients
     async getClient(id: string): Promise<Client> {
         const record = await this.conn.collection(this.CLIENT_COLL).getOne<Client>(id); 
-        return new Client(record.id, record.fullname, record.cpf, record.addresses);
+        return new Client(record.id, record.fullname, record.cpf);
     }
     async createClient(client: Client): Promise<Client> {
-        const record = await this.conn.collection(this.CLIENT_COLL).create<Client>({
-            "fullname": client.fullname,
-            "cpf": client.cpf,
-            "addresses": client.addresses.map(addr => addr.id),
-        });
-        return new Client(record.id, record.fullname, record.cpf, record.addresses);
+        const record = await this.conn.collection(this.CLIENT_COLL).create<Client>(client);
+        return new Client(record.id, record.fullname, record.cpf);
     }
     async updateClient(id: string, client: Client): Promise<Client> {
-        const record = await this.conn.collection(this.CLIENT_COLL).update<Client>(id, {
-            "fullname": client.fullname,
-            "cpf": client.cpf,
-            "addresses": client.addresses.map(addr => addr.id),
-        });
-        return new Client(record.id, record.fullname, record.cpf, record.addresses);
+        const record = await this.conn.collection(this.CLIENT_COLL).update<Client>(id, client);
+        return new Client(record.id, record.fullname, record.cpf);
     }
     async deleteClient(id: string): Promise<null> {
         await this.conn.collection(this.CLIENT_COLL).delete(id); 

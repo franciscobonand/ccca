@@ -15,12 +15,6 @@ const clientCommandSchema = z.object({
     cpf: z.string({
         required_error: "'cpf' is required",
     }).min(11).max(14),
-    addresses: z.object({
-        id: z.string().optional(),
-        postalcode: z.string({
-            required_error: "'postalcode' is required",
-        })
-    }).array().nonempty("'addresses' is required"),
 });
 
 export const clientCreateSchema = z.object({

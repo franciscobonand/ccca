@@ -27,13 +27,13 @@ export default class MockDB implements Database {
 
     // Clients
     async getClient(id: string): Promise<Client> {
-        return new Client("", "", "", []);
+        return new Client("", "", "");
     }
     async createClient(client: Client): Promise<Client> {
-        return new Client("", "", "", []);
+        return new Client("", "", "");
     }
     async updateClient(id: string, client: Client): Promise<Client> {
-        return new Client("", "", "", []);
+        return new Client("", "", "");
     }
     async deleteClient(id: string): Promise<null> {
         return null;

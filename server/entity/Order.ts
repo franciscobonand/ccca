@@ -1,43 +1,50 @@
 import Product from "./Product"
-import Address from "./Address"
 import Client from "./Client"
 import Coupon from "./Coupon"
 
 class OrderItem {
     constructor(
-        readonly product: Product,
+        readonly idProduct: string,
+        readonly price: number,
         readonly quantity: number,
     ){}
 }
 
 class Order {
-    totalValue: number
-    coupons: Coupon[]
+    readonly items: OrderItem[];
+    coupon?: Coupon;
 
     constructor(
-        readonly items: OrderItem[],
-        readonly address: Address,
+        readonly id: string | undefined,
         readonly client: Client,
-        coupons: Coupon[] = [],
-        public id?: string,
     ){
-        this.totalValue = this.calculateTotal(items, coupons);
-        this.coupons = coupons;
+        this.items = [];
     }
 
-    calculateTotal(items: OrderItem[], coupons: Coupon[]): number {
-        let itemsValue = 0;
-        let maxDiscount = 0;
-        for (let i = 0; i < items.length; i++) {
-            itemsValue += items[i].product.price * items[i].quantity;
+    addCoupon(coupon: Coupon) {
+        this.coupon = coupon;
+    }
+
+    addItem(product: Product, quantity: number) {
+        if (quantity <= 0)
+            throw new Error("Invalid quantity");
+
+		if (this.items.some((item: OrderItem) => item.idProduct === product.id))
+            throw new Error("Duplicated item");
+
+		this.items.push(new OrderItem(product.id, product.price, quantity));
+    }
+
+    getTotal(): number {
+        let total = 0;
+        for (let i = 0; i < this.items.length; i++) {
+            const item = this.items[i];
+            total += item.price * item.quantity;
         }
-        for (let i = 0; i < coupons.length; i++) {
-            if (coupons[i].discount > maxDiscount) {
-                maxDiscount = coupons[i].discount;
-            }
+        if (this.coupon) {
+            total -= (total * this.coupon.discount);
         }
-        const totalDiscount = maxDiscount || 1;
-        return (itemsValue * totalDiscount);
+        return total;
     }
 }
 
