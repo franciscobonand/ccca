@@ -12,6 +12,7 @@ class OrderItem {
 
 class Order {
     readonly items: OrderItem[];
+    readonly creationDate: Date;
     coupon?: Coupon;
 
     constructor(
@@ -19,10 +20,11 @@ class Order {
         readonly client: Client,
     ){
         this.items = [];
+        this.creationDate = new Date();
     }
 
     addCoupon(coupon: Coupon) {
-        this.coupon = coupon;
+        if (!coupon.isExpired(this.creationDate)) this.coupon = coupon;
     }
 
     addItem(product: Product, quantity: number) {

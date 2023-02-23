@@ -2,7 +2,7 @@ export default class Client {
     cpf: string
 
     constructor(
-        readonly id: string = "",
+        readonly id: string,
         readonly fullname: string,
         cpf: string,
     ) {

@@ -27,15 +27,15 @@ export default class PocketBaseDB implements Database {
     // Coupons
     async getCoupon(id: string): Promise<Coupon> {
         const record = await this.conn.collection(this.COUPON_COLL).getOne<Coupon>(id); 
-        return new Coupon(record.id, record.name, record.discount);
+        return new Coupon(record.id, record.name, record.discount, record.expireDate);
     }
     async createCoupon(coupon: Coupon): Promise<Coupon> {
         const record = await this.conn.collection(this.COUPON_COLL).create<Coupon>(coupon);
-        return new Coupon(record.id, record.name, record.discount);
+        return new Coupon(record.id, record.name, record.discount, record.expireDate);
     }
     async updateCoupon(id: string, coupon: Coupon): Promise<Coupon> {
         const record = await this.conn.collection(this.COUPON_COLL).update<Coupon>(id, coupon);
-        return new Coupon(record.id, record.name, record.discount);
+        return new Coupon(record.id, record.name, record.discount, record.expireDate);
     }
     async deleteCoupon(id: string): Promise<null> {
         await this.conn.collection(this.COUPON_COLL).delete(id); 

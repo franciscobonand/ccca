@@ -44,7 +44,7 @@ export function updateProduct(db: Database): HandlerFunc {
         console.log("updating product"); 
         try {
             const product = new Product(
-                "",
+                id,
                 body.name,
                 body.description,
                 body.price,

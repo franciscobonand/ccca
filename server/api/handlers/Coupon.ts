@@ -22,7 +22,12 @@ export function createCoupon(db: Database): HandlerFunc {
         const body = req.body;
         console.log("creating new coupon"); 
         try {
-            const coupon = new Coupon("", body.name, body.discount);
+            const coupon = new Coupon(
+                "",
+                body.name,
+                body.discount,
+                body.expireDate,
+            );
             const dbResponse = await db.createCoupon(coupon);
             resp.status(200).json(dbResponse);
         } catch (error) {
@@ -38,7 +43,12 @@ export function updateCoupon(db: Database): HandlerFunc {
         const body = req.body;
         console.log("updating coupon"); 
         try {
-            const coupon = new Coupon("", body.name, body.discount);
+            const coupon = new Coupon(
+                "",
+                body.name,
+                body.discount,
+                body.expireDate,
+            );
             const dbResponse = await db.updateCoupon(id, coupon);
             resp.status(200).json(dbResponse);
         } catch (error) {

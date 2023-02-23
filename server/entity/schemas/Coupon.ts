@@ -17,6 +17,9 @@ const couponCommandSchema = z.object({
     })
     .min(0.01, "'discount' must be greater than 0.01")
     .max(1, "'discount' must be at max 1"),
+    expireDate: z.string({
+        required_error: "'expireDate' is required",
+    }).datetime("Invalid date format"),
 });
 
 export const couponCreateSchema = z.object({
