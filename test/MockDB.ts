@@ -13,13 +13,13 @@ export default class MockDB implements Database {
 
     // Coupons
     async getCoupon(id: string): Promise<Coupon> {
-        return new Coupon("", "", 0);
+        return new Coupon("", "", 0, new Date());
     }
     async createCoupon(coupon: Coupon): Promise<Coupon> {
-        return new Coupon("", "", 0);
+        return new Coupon("", "", 0, new Date());
     }
     async updateCoupon(id: string, coupon: Coupon): Promise<Coupon> {
-        return new Coupon("", "", 0);
+        return new Coupon("", "", 0, new Date());
     }
     async deleteCoupon(id: string): Promise<null> {
         return null;

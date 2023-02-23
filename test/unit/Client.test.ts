@@ -1,10 +1,13 @@
 import Client from "../../server/entity/Client"
-import Address from "../../server/entity/Address"
 
-test("Deve criar um novo cliente com CPF válido", () => {
+test.each([
+    "411.502.100-44",
+    "684.053.160-00",
+    "74697131401",
+])("Deve criar um novo cliente com CPF válido - %p", (cpf) => {
     const expected = {
         fullname: "Ronaldo Miguel",
-        cpf: "411.502.100-44",
+        cpf: cpf,
     }; 
     const actual = new Client("", expected.fullname, expected.cpf) 
     expect(actual.fullname).toBe(expected.fullname)
