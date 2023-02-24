@@ -90,15 +90,42 @@ export default class PocketBaseDB implements Database {
     // Products
     async getProduct(id: string): Promise<Product> {
         const record = await this.conn.collection(this.PRODUCT_COLL).getOne<Product>(id);
-        return new Product(record.id, record.name, record.description, record.price);
+        return new Product(
+            record.id,
+            record.name,
+            record.description,
+            record.price,
+            record.width,
+            record.height,
+            record.length,
+            record.weight,
+        );
     }
     async createProduct(product: Product): Promise<Product> {
         const record = await this.conn.collection(this.PRODUCT_COLL).create<Product>(product);
-        return new Product(record.id, record.name, record.description, record.price);
+        return new Product(
+            record.id,
+            record.name,
+            record.description,
+            record.price,
+            record.width,
+            record.height,
+            record.length,
+            record.weight,
+        );
     }
     async updateProduct(id: string, product: Product): Promise<Product> {
         const record = await this.conn.collection(this.PRODUCT_COLL).update<Product>(id, product);
-        return new Product(record.id, record.name, record.description, record.price);
+        return new Product(
+            record.id,
+            record.name,
+            record.description,
+            record.price,
+            record.width,
+            record.height,
+            record.length,
+            record.weight,
+        );
     }
     async deleteProduct(id: string): Promise<null> {
         await this.conn.collection(this.PRODUCT_COLL).delete(id); 

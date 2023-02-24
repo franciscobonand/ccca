@@ -4,9 +4,9 @@ import Product from "../../server/entity/Product"
 import Coupon from "../../server/entity/Coupon"
 
 const client = new Client("", "Alberto","411.502.100-44") 
-const prod1 = new Product("1", "Bola", "Bola branca de futebol", 10.5)
-const prod2 = new Product("2", "Caneca", "Caneca colorida grande", 5.5)
-const prod3 = new Product("3", "Óculos", "Óculos azul", 15)
+const prod1 = new Product("1", "Bola", "Bola branca de futebol", 10.5, 20, 15, 10, 1)
+const prod2 = new Product("2", "Caneca", "Caneca colorida grande", 5.5, 100, 30, 10, 3)
+const prod3 = new Product("3", "Óculos", "Óculos azul", 15, 200, 100, 50, 40)
 const coupon = new Coupon("1", "PROMO20", 0.2, new Date("2024-01-01T10:00:00"));
 const expiredCoupon = new Coupon("1", "PROMO20", 0.2, new Date("2022-01-01T10:00:00"));
 

@@ -27,6 +27,10 @@ export function createProduct(db: Database): HandlerFunc {
                 body.name,
                 body.description,
                 body.price,
+                body.width,
+                body.height,
+                body.length,
+                body.weight,
             );
             const dbResponse = await db.createProduct(product);
             resp.status(200).json(dbResponse);
@@ -48,6 +52,10 @@ export function updateProduct(db: Database): HandlerFunc {
                 body.name,
                 body.description,
                 body.price,
+                body.width,
+                body.height,
+                body.length,
+                body.weight,
             );
             const dbResponse = await db.updateProduct(id, product);
             resp.status(200).json(dbResponse);

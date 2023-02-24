@@ -55,13 +55,13 @@ export default class MockDB implements Database {
 
     // Products
     async getProduct(id: string): Promise<Product> {
-        return new Product("", "", "", 0);
+        return new Product("", "", "", 0, 0, 0, 0, 0);
     }
     async createProduct(product: Product): Promise<Product> {
-        return new Product("", "", "", 0);
+        return new Product("", "", "", 0, 0, 0, 0, 0);
     }
     async updateProduct(id: string, product: Product): Promise<Product> {
-        return new Product("", "", "", 0);
+        return new Product("", "", "", 0, 0, 0, 0, 0);
     }
     async deleteProduct(id: string): Promise<null> {
         return null;

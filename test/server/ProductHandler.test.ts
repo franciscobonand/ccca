@@ -28,6 +28,10 @@ test("Deve criar um novo produto", async () => {
         name: "Bola de futebol",
         description: "Uma bola com hexagonos pretos e brancos",
         price: 10.5,
+        width: 100,
+        height: 30,
+        length: 10,
+        weight: 3,
     }
     const mockProductHandler = sinon.mock(MockDB.prototype);
     mockProductHandler.expects("createProduct").once().resolves(expectedReturn);
@@ -35,6 +39,10 @@ test("Deve criar um novo produto", async () => {
         name: "Bola de futebol",
         description: "Uma bola com hexagonos pretos e brancos",
         price: 10.5,
+        width: 100,
+        height: 30,
+        length: 10,
+        weight: 3,
     }
     const resp = await axios.post(`${serverAddr}/product`, input);
     expect(resp.status).toBe(200);
@@ -42,55 +50,149 @@ test("Deve criar um novo produto", async () => {
     mockProductHandler.verify();
 })
 
-test("Não deve criar um novo produto sem nome", async () => {
-    const input = {
-        description: "Uma bola com hexagonos pretos e brancos",
-        price: 10.5,
-    }
+test.each([
+    [
+        "'name' is required",
+        {
+            description: "Uma bola com hexagonos pretos e brancos",
+            price: 10.5,
+            width: 100,
+            height: 30,
+            length: 10,
+            weight: 3,
+        },
+    ],
+    [
+        "'description' is required",
+        {
+            name: "Bola de futebol",
+            price: 10.5,
+            width: 100,
+            height: 30,
+            length: 10,
+            weight: 3,
+        },
+    ],
+    [
+        "'price' is required",
+        {
+            name: "Bola de futebol",
+            description: "Uma bola com hexagonos pretos e brancos",
+            width: 100,
+            height: 30,
+            length: 10,
+            weight: 3,
+        },
+    ],
+    [
+        "'width' is required",
+        {
+            name: "Bola de futebol",
+            description: "Uma bola com hexagonos pretos e brancos",
+            price: 10.5,
+            height: 30,
+            length: 10,
+            weight: 3,
+        },
+    ],
+    [
+        "'height' is required",
+        {
+            name: "Bola de futebol",
+            description: "Uma bola com hexagonos pretos e brancos",
+            price: 10.5,
+            width: 100,
+            length: 10,
+            weight: 3,
+        },
+    ],
+    [
+        "'length' is required",
+        {
+            name: "Bola de futebol",
+            description: "Uma bola com hexagonos pretos e brancos",
+            price: 10.5,
+            width: 100,
+            height: 30,
+            weight: 3,
+        },
+    ],
+    [
+        "'weight' is required",
+        {
+            name: "Bola de futebol",
+            description: "Uma bola com hexagonos pretos e brancos",
+            price: 10.5,
+            width: 100,
+            height: 30,
+            length: 10,
+        },
+    ],
+    [
+        "'price' must be positive",
+        {
+            name: "Bola de futebol",
+            description: "Uma bola com hexagonos pretos e brancos",
+            price: -10.5,
+            width: 100,
+            height: 30,
+            length: 10,
+            weight: 3,
+        },
+    ],
+    [
+        "'width' must be positive",
+        {
+            name: "Bola de futebol",
+            description: "Uma bola com hexagonos pretos e brancos",
+            price: 10.5,
+            width: -100,
+            height: 30,
+            length: 10,
+            weight: 3,
+        },
+    ],
+    [
+        "'height' must be positive",
+        {
+            name: "Bola de futebol",
+            description: "Uma bola com hexagonos pretos e brancos",
+            price: 10.5,
+            width: 100,
+            height: -30,
+            length: 10,
+            weight: 3,
+        },
+    ],
+    [
+        "'length' must be positive",
+        {
+            name: "Bola de futebol",
+            description: "Uma bola com hexagonos pretos e brancos",
+            price: 10.5,
+            width: 100,
+            height: 30,
+            length: -10,
+            weight: 3,
+        },
+    ],
+    [
+        "'weight' must be positive",
+        {
+            name: "Bola de futebol",
+            description: "Uma bola com hexagonos pretos e brancos",
+            price: 10.5,
+            width: 100,
+            height: 30,
+            length: 10,
+            weight: -3,
+        },
+    ],
+])("Não deve criar um novo produto - %p", async (err, input) => {
     const resp = await axios.post(`${serverAddr}/product`, input);
     expect(resp.status).toBe(400);
     const nameErr = resp.data.issues.find(
-        (issue: ZodIssue) => issue.message == "'name' is required",
-    );
-        expect(nameErr).toBeTruthy();
-})
-
-test("Não deve criar um novo produto sem descrição", async () => {
-    const input = {
-        name: "Bola de futebol",
-        price: 10.5,
-    }
-    const resp = await axios.post(`${serverAddr}/product`, input);
-    expect(resp.status).toBe(400);
-    const nameErr = resp.data.issues.find(
-        (issue: ZodIssue) => issue.message == "'description' is required",
-    );
-        expect(nameErr).toBeTruthy();
-})
-
-test("Não deve criar um novo produto sem preço", async () => {
-    const input = {
-        name: "Bola de futebol",
-        description: "Uma bola com hexagonos pretos e brancos",
-    }
-    const resp = await axios.post(`${serverAddr}/product`, input);
-    expect(resp.status).toBe(400);
-    const nameErr = resp.data.issues.find(
-        (issue: ZodIssue) => issue.message == "'price' is required",
-    );
-        expect(nameErr).toBeTruthy();
-})
-
-test("Não deve criar um novo produto com preço negativo", async () => {
-    const input = {
-        name: "Bola de futebol",
-        description: "Uma bola com hexagonos pretos e brancos",
-        price: -10.5,
-    }
-    const resp = await axios.post(`${serverAddr}/product`, input);
-    expect(resp.status).toBe(400);
-    const nameErr = resp.data.issues.find(
-        (issue: ZodIssue) => issue.message == "'price' must be positive",
+        (issue: ZodIssue) => issue.message == err,
     );
         expect(nameErr).toBeTruthy();
 })
@@ -99,9 +201,13 @@ test("Não deve criar um produto devido a erro no banco de dados", async () => {
     const mockProductHandler = sinon.mock(MockDB.prototype);
     mockProductHandler.expects("createProduct").once().throws("DB error");
     const input = {
-        name: "Bola de futebol",
-        description: "Uma bola com hexagonos pretos e brancos",
-        price: 10.5,
+            name: "Bola de futebol",
+            description: "Uma bola com hexagonos pretos e brancos",
+            price: 10.5,
+            width: 100,
+            height: 30,
+            length: 10,
+            weight: 3,
     }
     const resp = await axios.post(`${serverAddr}/product`, input);
     expect(resp.status).toBe(500);
@@ -160,6 +266,10 @@ test("Deve atualizar um novo produto", async () => {
         name: "Bola de futebol",
         description: "Uma bola com hexagonos pretos e brancos",
         price: 10.5,
+        width: 100,
+        height: 30,
+        length: 10,
+        weight: 3,
     }
     const mockProductHandler = sinon.mock(MockDB.prototype);
     mockProductHandler.expects("updateProduct").once().resolves(expectedReturn);
@@ -167,6 +277,10 @@ test("Deve atualizar um novo produto", async () => {
         name: "Bola de futebol",
         description: "Uma bola com hexagonos pretos e brancos",
         price: 10.5,
+        width: 100,
+        height: 30,
+        length: 10,
+        weight: 3,
     }
     const resp = await axios.put(`${serverAddr}/product/${expectedReturn.id}`, input);
     expect(resp.status).toBe(200);
@@ -174,55 +288,149 @@ test("Deve atualizar um novo produto", async () => {
     mockProductHandler.verify();
 })
 
-test("Não deve atualizar um novo produto sem nome", async () => {
-    const input = {
-        description: "Uma bola com hexagonos pretos e brancos",
-        price: 10.5,
-    }
+test.each([
+    [
+        "'name' is required",
+        {
+            description: "Uma bola com hexagonos pretos e brancos",
+            price: 10.5,
+            width: 100,
+            height: 30,
+            length: 10,
+            weight: 3,
+        },
+    ],
+    [
+        "'description' is required",
+        {
+            name: "Bola de futebol",
+            price: 10.5,
+            width: 100,
+            height: 30,
+            length: 10,
+            weight: 3,
+        },
+    ],
+    [
+        "'price' is required",
+        {
+            name: "Bola de futebol",
+            description: "Uma bola com hexagonos pretos e brancos",
+            width: 100,
+            height: 30,
+            length: 10,
+            weight: 3,
+        },
+    ],
+    [
+        "'width' is required",
+        {
+            name: "Bola de futebol",
+            description: "Uma bola com hexagonos pretos e brancos",
+            price: 10.5,
+            height: 30,
+            length: 10,
+            weight: 3,
+        },
+    ],
+    [
+        "'height' is required",
+        {
+            name: "Bola de futebol",
+            description: "Uma bola com hexagonos pretos e brancos",
+            price: 10.5,
+            width: 100,
+            length: 10,
+            weight: 3,
+        },
+    ],
+    [
+        "'length' is required",
+        {
+            name: "Bola de futebol",
+            description: "Uma bola com hexagonos pretos e brancos",
+            price: 10.5,
+            width: 100,
+            height: 30,
+            weight: 3,
+        },
+    ],
+    [
+        "'weight' is required",
+        {
+            name: "Bola de futebol",
+            description: "Uma bola com hexagonos pretos e brancos",
+            price: 10.5,
+            width: 100,
+            height: 30,
+            length: 10,
+        },
+    ],
+    [
+        "'price' must be positive",
+        {
+            name: "Bola de futebol",
+            description: "Uma bola com hexagonos pretos e brancos",
+            price: -10.5,
+            width: 100,
+            height: 30,
+            length: 10,
+            weight: 3,
+        },
+    ],
+    [
+        "'width' must be positive",
+        {
+            name: "Bola de futebol",
+            description: "Uma bola com hexagonos pretos e brancos",
+            price: 10.5,
+            width: -100,
+            height: 30,
+            length: 10,
+            weight: 3,
+        },
+    ],
+    [
+        "'height' must be positive",
+        {
+            name: "Bola de futebol",
+            description: "Uma bola com hexagonos pretos e brancos",
+            price: 10.5,
+            width: 100,
+            height: -30,
+            length: 10,
+            weight: 3,
+        },
+    ],
+    [
+        "'length' must be positive",
+        {
+            name: "Bola de futebol",
+            description: "Uma bola com hexagonos pretos e brancos",
+            price: 10.5,
+            width: 100,
+            height: 30,
+            length: -10,
+            weight: 3,
+        },
+    ],
+    [
+        "'weight' must be positive",
+        {
+            name: "Bola de futebol",
+            description: "Uma bola com hexagonos pretos e brancos",
+            price: 10.5,
+            width: 100,
+            height: 30,
+            length: 10,
+            weight: -3,
+        },
+    ],
+])("Não deve atualizar um novo produto - %p", async (err, input) => {
     const resp = await axios.put(`${serverAddr}/product/randomID`, input);
     expect(resp.status).toBe(400);
     const nameErr = resp.data.issues.find(
-        (issue: ZodIssue) => issue.message == "'name' is required",
-    );
-        expect(nameErr).toBeTruthy();
-})
-
-test("Não deve atualizar um novo produto sem descrição", async () => {
-    const input = {
-        name: "Bola de futebol",
-        price: 10.5,
-    }
-    const resp = await axios.put(`${serverAddr}/product/randomID`, input);
-    expect(resp.status).toBe(400);
-    const nameErr = resp.data.issues.find(
-        (issue: ZodIssue) => issue.message == "'description' is required",
-    );
-        expect(nameErr).toBeTruthy();
-})
-
-test("Não deve atualizar um novo produto sem preço", async () => {
-    const input = {
-        name: "Bola de futebol",
-        description: "Uma bola com hexagonos pretos e brancos",
-    }
-    const resp = await axios.put(`${serverAddr}/product/randomID`, input);
-    expect(resp.status).toBe(400);
-    const nameErr = resp.data.issues.find(
-        (issue: ZodIssue) => issue.message == "'price' is required",
-    );
-        expect(nameErr).toBeTruthy();
-})
-
-test("Não deve atualizar um novo produto com preço negativo", async () => {
-    const input = {
-        name: "Bola de futebol",
-        description: "Uma bola com hexagonos pretos e brancos",
-        price: -10.5,
-    }
-    const resp = await axios.put(`${serverAddr}/product/randomID`, input);
-    expect(resp.status).toBe(400);
-    const nameErr = resp.data.issues.find(
-        (issue: ZodIssue) => issue.message == "'price' must be positive",
+        (issue: ZodIssue) => issue.message == err,
     );
         expect(nameErr).toBeTruthy();
 })
@@ -231,9 +439,13 @@ test("Não deve atualizar um produto devido a erro no banco de dados", async () 
     const mockProductHandler = sinon.mock(MockDB.prototype);
     mockProductHandler.expects("updateProduct").once().throws("DB error");
     const input = {
-        name: "Bola de futebol",
-        description: "Uma bola com hexagonos pretos e brancos",
-        price: 10.5,
+            name: "Bola de futebol",
+            description: "Uma bola com hexagonos pretos e brancos",
+            price: 10.5,
+            width: 100,
+            height: 30,
+            length: 10,
+            weight: 3,
     }
     const resp = await axios.put(`${serverAddr}/product/randomID`, input);
     expect(resp.status).toBe(500);
